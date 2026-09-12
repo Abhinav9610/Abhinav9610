@@ -1,0 +1,315 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+    --neon-blue: #00f3ff;
+    --neon-pink: #ff00ff;
+    --neon-green: #39ff14;
+    --neon-yellow: #fdf500;
+    --neon-red: #ff003c;
+    --bg-dark: rgba(10, 10, 20, 0.85);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none; /* Prevent default touch actions like scrolling */
+}
+
+body {
+    font-family: 'Orbitron', sans-serif;
+    overflow: hidden;
+    background-color: #000;
+    color: white;
+}
+
+#game-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: auto;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Typography & Neon Effects */
+.neon-text {
+    font-size: 3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #fff;
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px var(--neon-blue),
+        0 0 40px var(--neon-blue),
+        0 0 80px var(--neon-blue);
+    text-transform: uppercase;
+}
+
+.neon-text span {
+    font-size: 2rem;
+    color: var(--neon-pink);
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px var(--neon-pink),
+        0 0 40px var(--neon-pink);
+}
+
+.neon-text-red {
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #fff;
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px var(--neon-red),
+        0 0 40px var(--neon-red);
+}
+
+.neon-color {
+    color: var(--neon-green);
+    text-shadow: 0 0 10px var(--neon-green);
+}
+
+/* Buttons */
+button {
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.neon-btn {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    padding: 1rem 3rem;
+    margin: 1rem;
+    border: 2px solid var(--neon-blue);
+    border-radius: 10px;
+    background: rgba(0, 243, 255, 0.1);
+    box-shadow:
+        0 0 10px var(--neon-blue),
+        inset 0 0 10px var(--neon-blue);
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.neon-btn:active {
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow:
+        0 0 20px var(--neon-blue),
+        inset 0 0 20px var(--neon-blue);
+}
+
+.neon-btn-small {
+    font-size: 1.2rem;
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    margin: 0.5rem;
+    border: 1px solid var(--neon-pink);
+    border-radius: 8px;
+    background: rgba(255, 0, 255, 0.1);
+    box-shadow:
+        0 0 5px var(--neon-pink),
+        inset 0 0 5px var(--neon-pink);
+}
+
+.neon-btn-small:active {
+    background: var(--neon-pink);
+    color: #000;
+}
+
+/* Menus */
+#main-menu, #pause-screen, #game-over-screen {
+    background-color: var(--bg-dark);
+    backdrop-filter: blur(5px);
+}
+
+.menu-stats, .results-stats {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    background: rgba(0,0,0,0.5);
+    padding: 1rem 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-box .label {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.stat-box .value {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.menu-options {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* HUD */
+#hud {
+    justify-content: space-between;
+    pointer-events: none; /* Let touches pass through */
+    padding: 20px;
+}
+
+.hud-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.score-container, .energy-container {
+    display: flex;
+    flex-direction: column;
+    background: rgba(0,0,0,0.6);
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.score-container .label, .energy-container .label {
+    font-size: 0.8rem;
+    color: #ddd;
+}
+
+.score-container .value, .energy-container .value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.hud-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    background: rgba(0,0,0,0.6);
+    border: 2px solid var(--neon-blue);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--neon-blue);
+    pointer-events: auto; /* Re-enable pointer events for the button */
+}
+
+#powerup-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--neon-yellow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+#powerup-name {
+    color: var(--neon-yellow);
+    font-weight: bold;
+    text-shadow: 0 0 5px var(--neon-yellow);
+}
+
+#powerup-bar-container {
+    width: 150px;
+    height: 10px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#powerup-bar {
+    width: 100%;
+    height: 100%;
+    background: var(--neon-yellow);
+    box-shadow: 0 0 10px var(--neon-yellow);
+    transition: width 0.1s linear;
+}
+
+#chase-warning {
+    position: absolute;
+    top: 30%;
+    width: 100%;
+    text-align: center;
+    animation: blink 0.5s infinite alternate;
+}
+
+@keyframes blink {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Tutorial */
+#tutorial-overlay {
+    background: rgba(0,0,0,0.4);
+    pointer-events: none;
+}
+
+.tutorial-text {
+    font-size: 2rem;
+    color: white;
+    text-shadow: 0 0 10px white;
+    background: rgba(0,0,0,0.6);
+    padding: 20px 40px;
+    border-radius: 20px;
+    border: 2px solid white;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); opacity: 0.8; }
+    to { transform: scale(1.1); opacity: 1; }
+}
