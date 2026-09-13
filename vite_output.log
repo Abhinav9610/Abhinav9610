@@ -3,9 +3,7 @@
 > vite
 
 
-  VITE v8.3.0  ready in 241 ms
+  VITE v8.3.0  ready in 227 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
-10:37:01 PM [vite] (client) page reload src/game.js
-10:37:07 PM [vite] (client) page reload src/game.js

@@ -11,7 +11,8 @@ class App {
         this.bindEvents();
         this.loadSaveData();
 
-        this.clock = new THREE.Clock();
+        // Use THREE.Timer (or manually handle time with Date.now() if Timer isn't available)
+        this.lastTime = Date.now();
         this.isRunning = false;
         this.isPaused = false;
 
@@ -38,7 +39,7 @@ class App {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        this.renderer.shadowMap.type = THREE.PCFShadowMap;
         container.appendChild(this.renderer.domElement);
 
         // Lights
@@ -186,7 +187,7 @@ class App {
         this.game.reset();
         this.isRunning = true;
         this.isPaused = false;
-        this.clock.start();
+        this.lastTime = Date.now();
 
         // Show tutorial briefly
         this.uiManager.showTutorial("SWIPE TO MOVE\nUP TO JUMP\nDOWN TO SLIDE", 3000);
@@ -201,7 +202,7 @@ class App {
     resumeGame() {
         if (!this.isRunning || this.game.isGameOver) return;
         this.isPaused = false;
-        this.clock.getDelta(); // Clear accumulated time
+        this.lastTime = Date.now(); // Clear accumulated time
         this.uiManager.showScreen('hud');
     }
 
@@ -231,10 +232,14 @@ class App {
     animate() {
         requestAnimationFrame(this.animate);
 
-        const dt = this.clock.getDelta();
+        const now = Date.now();
+        const dt = (now - this.lastTime) / 1000.0;
+        this.lastTime = now;
 
         if (this.isRunning && !this.isPaused) {
-            this.game.update(dt);
+            // Cap dt to avoid huge jumps on lag spikes
+            const cappedDt = Math.min(dt, 0.1);
+            this.game.update(cappedDt);
             if (this.game.isGameOver) {
                 this.gameOver();
             }

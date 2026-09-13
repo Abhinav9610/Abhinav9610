@@ -180,7 +180,7 @@ export class Game {
     }
 
     initMaterials() {
-        this.roadMat = new THREE.MeshLambertMaterial({
+        this.roadMat = new THREE.MeshStandardMaterial({
             color: 0x111111,
             roughness: 0.2, // Wet look
             metalness: 0.8
